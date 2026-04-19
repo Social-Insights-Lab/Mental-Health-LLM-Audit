@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to create human annotation sampling from merged LLM evaluation files
+Refined script to create exactly 100 samples per file, excluding UNKNOWN entries
 """
 
 import json
@@ -11,14 +11,14 @@ from collections import Counter, defaultdict
 
 def get_majority_vote(claude_label, openai_label, deepseek_label):
     """
-    Get majority vote from three evaluator labels
+    Get majority vote from three evaluator labels, excluding None values
     Returns: (majority_label, is_unanimous, vote_counts)
     """
     # Handle None values by treating them as abstentions
     valid_labels = [label for label in [claude_label, openai_label, deepseek_label] if label is not None]
     
     if not valid_labels:
-        return "UNKNOWN", False, {}
+        return None, False, {}  # Return None for UNKNOWN cases
     
     vote_counts = Counter(valid_labels)
     most_common = vote_counts.most_common()
@@ -40,10 +40,10 @@ def get_majority_vote(claude_label, openai_label, deepseek_label):
     
     return majority_label, is_unanimous, dict(vote_counts)
 
-def process_file(filepath):
+def process_file_refined(filepath):
     """
-    Process a single merged file to extract data with majority voting
-    Returns list of processed entries
+    Process a single merged file, excluding UNKNOWN entries
+    Returns list of processed entries with valid majority votes
     """
     entries = []
     filename = os.path.basename(filepath)
@@ -70,6 +70,10 @@ def process_file(filepath):
                         claude_label, openai_label, deepseek_label
                     )
                     
+                    # Skip entries without valid majority vote (UNKNOWN)
+                    if majority_label is None:
+                        continue
+                    
                     entry = {
                         'filename': llm_name,
                         'line_no': data.get('line_no', line_num),
@@ -92,11 +96,11 @@ def process_file(filepath):
     
     return entries
 
-def stratified_sample(entries, target_size=100):
+def stratified_sample_exact(entries, target_size=100):
     """
-    Sample entries with balanced representation across majority labels
+    Sample exactly target_size entries with balanced representation across majority labels
     """
-    # Group by majority label
+    # Group by majority label (should only be SUPPORT, REJECT, AMBIGUOUS now)
     label_groups = defaultdict(list)
     for entry in entries:
         label_groups[entry['majority_label']].append(entry)
@@ -106,48 +110,115 @@ def stratified_sample(entries, target_size=100):
         print(f"    {label}: {len(group)} entries")
     
     # Calculate target per group (aim for equal representation)
-    available_labels = list(label_groups.keys())
+    available_labels = sorted(label_groups.keys())  # Sort for consistency
     target_per_label = target_size // len(available_labels)
     remainder = target_size % len(available_labels)
     
     sampled_entries = []
     
     # Sample from each label group
-    for i, (label, group) in enumerate(label_groups.items()):
+    for i, label in enumerate(available_labels):
+        group = label_groups[label]
         # Add remainder to first few groups
         current_target = target_per_label + (1 if i < remainder else 0)
         
         if len(group) >= current_target:
             sampled = random.sample(group, current_target)
         else:
-            sampled = group  # Take all if not enough
+            # If not enough entries in this category, sample all and make up difference from other categories
+            sampled = group
             print(f"    Warning: Only {len(group)} entries available for {label}, needed {current_target}")
         
         sampled_entries.extend(sampled)
         print(f"    Sampled {len(sampled)} entries for {label}")
     
+    # If we're short of target due to insufficient entries in some categories,
+    # sample additional entries from categories with surplus
+    if len(sampled_entries) < target_size:
+        shortage = target_size - len(sampled_entries)
+        sampled_line_nos = {entry['line_no'] for entry in sampled_entries}
+        
+        # Get remaining entries not yet sampled
+        remaining_entries = [entry for entry in entries if entry['line_no'] not in sampled_line_nos]
+        
+        if len(remaining_entries) >= shortage:
+            additional_samples = random.sample(remaining_entries, shortage)
+            sampled_entries.extend(additional_samples)
+            print(f"    Added {shortage} additional samples to reach {target_size}")
+    
     # Shuffle the final sample to mix labels
     random.shuffle(sampled_entries)
-    return sampled_entries
+    return sampled_entries[:target_size]  # Ensure exactly target_size
 
-def create_annotation_files(all_entries, output_dir):
-    """
-    Create Excel files for human annotation and comparison
-    """
+def main():
+    """Main function to create refined annotation sample"""
+    merged_dir = "/home/ad2688/Research/mental_disorder/results_new/merged"
+    output_dir = "/home/ad2688/Research/mental_disorder/results_new/human_annotation"
+    
+    # Set random seed for reproducibility
+    random.seed(42)
+    
+    print("CREATING REFINED ANNOTATION SAMPLE (100 per file)")
+    print("=" * 60)
+    
+    all_sampled_entries = []
+    
+    # Process each merged file
+    for filename in sorted(os.listdir(merged_dir)):
+        if filename.startswith('merged_') and filename.endswith('.jsonl'):
+            llm_name = filename.replace('merged_', '').replace('_generations.jsonl', '')
+            filepath = os.path.join(merged_dir, filename)
+            
+            print(f"\nProcessing {llm_name}...")
+            
+            # Process file to get entries with valid majority voting (excluding UNKNOWN)
+            entries = process_file_refined(filepath)
+            print(f"  Total entries with valid labels: {len(entries)}")
+            
+            # Get majority label distribution
+            label_dist = Counter([entry['majority_label'] for entry in entries])
+            print(f"  Majority label distribution: {dict(label_dist)}")
+            
+            # Sample exactly 100 entries with balanced representation
+            sampled_entries = stratified_sample_exact(entries, target_size=100)
+            print(f"  Final sample size: {len(sampled_entries)}")
+            
+            # Verify the sample distribution
+            sample_dist = Counter([entry['majority_label'] for entry in sampled_entries])
+            print(f"  Sample distribution: {dict(sample_dist)}")
+            
+            all_sampled_entries.extend(sampled_entries)
+    
+    print(f"\n📊 OVERALL SAMPLING SUMMARY")
+    print("=" * 40)
+    print(f"Total sampled entries: {len(all_sampled_entries)}")
+    
+    # Show overall distribution
+    overall_dist = Counter([entry['majority_label'] for entry in all_sampled_entries])
+    print(f"Overall label distribution: {dict(overall_dist)}")
+    
+    # Show distribution by LLM
+    llm_dist = Counter([entry['filename'] for entry in all_sampled_entries])
+    print(f"Entries per LLM: {dict(llm_dist)}")
+    
+    # Create annotation files
+    print(f"\n📝 CREATING FINAL ANNOTATION FILES")
+    print("=" * 40)
+    
     os.makedirs(output_dir, exist_ok=True)
     
     # Prepare data for annotation file
     annotation_data = []
     comparison_data = []
     
-    for entry in all_entries:
+    for entry in all_sampled_entries:
         # For human annotation file
         annotation_row = {
             'Filename': entry['filename'],
             'Line_No': entry['line_no'],
             'Group': entry['group'],
             'Stereotype': entry['stereotype'],
-            'Generation': entry['generation'][:500] + "..." if len(entry['generation']) > 500 else entry['generation'],  # Truncate for readability
+            'Generation': entry['generation'][:1000] + "..." if len(entry['generation']) > 1000 else entry['generation'],
             'Human_Annot': ''  # Empty for human to fill
         }
         annotation_data.append(annotation_row)
@@ -172,8 +243,8 @@ def create_annotation_files(all_entries, output_dir):
     comparison_df = pd.DataFrame(comparison_data)
     
     # Save to Excel files
-    annotation_file = os.path.join(output_dir, 'human_annotation_sample.xlsx')
-    comparison_file = os.path.join(output_dir, 'llm_labels_comparison.xlsx')
+    annotation_file = os.path.join(output_dir, 'human_annotation_sample_refined.xlsx')
+    comparison_file = os.path.join(output_dir, 'llm_labels_comparison_refined.xlsx')
     
     with pd.ExcelWriter(annotation_file, engine='openpyxl') as writer:
         annotation_df.to_excel(writer, sheet_name='Annotation', index=False)
@@ -181,68 +252,12 @@ def create_annotation_files(all_entries, output_dir):
     with pd.ExcelWriter(comparison_file, engine='openpyxl') as writer:
         comparison_df.to_excel(writer, sheet_name='Comparison', index=False)
     
-    print(f"\n📄 Created annotation file: {annotation_file}")
+    print(f"📄 Created annotation file: {annotation_file}")
     print(f"📄 Created comparison file: {comparison_file}")
-    
-    return annotation_file, comparison_file
-
-def main():
-    """Main function to process all files and create sampling"""
-    merged_dir = "/home/ad2688/Research/mental_disorder/results_new/merged"
-    output_dir = "/home/ad2688/Research/mental_disorder/results_new/human_annotation"
-    
-    # Set random seed for reproducibility
-    random.seed(42)
-    
-    print("PROCESSING MERGED FILES FOR HUMAN ANNOTATION")
-    print("=" * 60)
-    
-    all_sampled_entries = []
-    
-    # Process each merged file
-    for filename in sorted(os.listdir(merged_dir)):
-        if filename.startswith('merged_') and filename.endswith('.jsonl'):
-            llm_name = filename.replace('merged_', '').replace('_generations.jsonl', '')
-            filepath = os.path.join(merged_dir, filename)
-            
-            print(f"\nProcessing {llm_name}...")
-            
-            # Process file to get entries with majority voting
-            entries = process_file(filepath)
-            print(f"  Total entries: {len(entries)}")
-            
-            # Get majority label distribution
-            label_dist = Counter([entry['majority_label'] for entry in entries])
-            print(f"  Majority label distribution: {dict(label_dist)}")
-            
-            # Sample 100 entries with balanced representation
-            sampled_entries = stratified_sample(entries, target_size=100)
-            print(f"  Final sample size: {len(sampled_entries)}")
-            
-            all_sampled_entries.extend(sampled_entries)
-    
-    print(f"\n📊 OVERALL SAMPLING SUMMARY")
-    print("=" * 40)
-    print(f"Total sampled entries: {len(all_sampled_entries)}")
-    
-    # Show overall distribution
-    overall_dist = Counter([entry['majority_label'] for entry in all_sampled_entries])
-    print(f"Overall label distribution: {dict(overall_dist)}")
-    
-    # Show distribution by LLM
-    llm_dist = Counter([entry['filename'] for entry in all_sampled_entries])
-    print(f"Entries per LLM: {dict(llm_dist)}")
-    
-    # Create annotation files
-    print(f"\n📝 CREATING ANNOTATION FILES")
-    print("=" * 40)
-    annotation_file, comparison_file = create_annotation_files(all_sampled_entries, output_dir)
     
     print(f"\n✅ COMPLETED!")
     print(f"📁 Output directory: {output_dir}")
-    print(f"📄 Files created:")
-    print(f"  - {os.path.basename(annotation_file)} (for human annotation)")
-    print(f"  - {os.path.basename(comparison_file)} (for comparison with majority vote)")
+    print(f"🎯 Each LLM now has exactly 100 sampled entries for human annotation")
 
 if __name__ == "__main__":
     main()

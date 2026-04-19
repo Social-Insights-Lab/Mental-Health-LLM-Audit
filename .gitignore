@@ -20,16 +20,10 @@ build/
 .Python
 
 # -----------------------------------------------------------------------------
-# Jupyter
+# Jupyter scratch notebooks
 # -----------------------------------------------------------------------------
 .ipynb_checkpoints/
 codes/cuda_error_fix.ipynb
-
-# -----------------------------------------------------------------------------
-# Scratch / test scripts (not part of final methodology)
-# -----------------------------------------------------------------------------
-codes/test_mixtral.py
-codes/test_ollama.py
 
 # -----------------------------------------------------------------------------
 # Raw LLM generation files (large; hosted on Hugging Face Hub)
