@@ -1,0 +1,74 @@
+{
+  "gemma-7b_generations": {
+    "point_estimate": 0.5811447811447812,
+    "ci_lower": 0.569023569023569,
+    "ci_upper": 0.5932659932659933,
+    "ci_width": 0.024242424242424288
+  },
+  "gemma2-9b_generations": {
+    "point_estimate": 0.2609427609427609,
+    "ci_lower": 0.24983164983164982,
+    "ci_upper": 0.2723905723905724,
+    "ci_width": 0.022558922558922584
+  },
+  "gemma3-4b-uncensored_generations": {
+    "point_estimate": 0.1632996632996633,
+    "ci_lower": 0.15387205387205388,
+    "ci_upper": 0.1728956228956229,
+    "ci_width": 0.019023569023569026
+  },
+  "llama2-7B_generations": {
+    "point_estimate": 0.577946127946128,
+    "ci_lower": 0.5651515151515152,
+    "ci_upper": 0.5904040404040404,
+    "ci_width": 0.025252525252525193
+  },
+  "llama3-70B_generations": {
+    "point_estimate": 0.0436026936026936,
+    "ci_lower": 0.03855218855218855,
+    "ci_upper": 0.04865319865319866,
+    "ci_width": 0.010101010101010104
+  },
+  "llama3.1-8B-it-uncensored_generations": {
+    "point_estimate": 0.2956228956228956,
+    "ci_lower": 0.28383838383838383,
+    "ci_upper": 0.30707070707070705,
+    "ci_width": 0.023232323232323215
+  },
+  "llama3_generations": {
+    "point_estimate": 0.4239057239057239,
+    "ci_lower": 0.41144781144781145,
+    "ci_upper": 0.43602693602693604,
+    "ci_width": 0.02457912457912459
+  },
+  "mistral-uncensored_generations": {
+    "point_estimate": 0.24898989898989898,
+    "ci_lower": 0.23787878787878788,
+    "ci_upper": 0.25993265993265996,
+    "ci_width": 0.022053872053872076
+  },
+  "mistral-v0.1_generations": {
+    "point_estimate": 0.4097643097643098,
+    "ci_lower": 0.39713383838383837,
+    "ci_upper": 0.4222222222222222,
+    "ci_width": 0.025088383838383854
+  },
+  "mistral-v0.2_generations": {
+    "point_estimate": 0.13131313131313133,
+    "ci_lower": 0.12272727272727273,
+    "ci_upper": 0.1399031986531986,
+    "ci_width": 0.017175925925925886
+  },
+  "mistral-v0.3_generations": {
+    "point_estimate": 0.15168350168350167,
+    "ci_lower": 0.14292929292929293,
+    "ci_upper": 0.16077441077441076,
+    "ci_width": 0.01784511784511783
+  },
+  "mixtral-8x22b_generations": {
+    "point_estimate": 0.022727272727272728,
+    "ci_lower": 0.019023569023569022,
+    "ci_upper": 0.0265993265993266,
+    "ci_width": 0.007575757575757576
+  }
+}

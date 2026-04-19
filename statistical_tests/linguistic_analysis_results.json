@@ -1,0 +1,79 @@
+{
+  "section_5.2": {
+    "average_spearman_rho": 0.9676767676767676,
+    "pairwise_correlations": [
+      {
+        "Template Pair": "0 vs 1",
+        "Spearman rho": 0.9757575757575757,
+        "p-value": 1.4675461874042197e-06
+      },
+      {
+        "Template Pair": "0 vs 2",
+        "Spearman rho": 0.9636363636363635,
+        "p-value": 7.320974809529922e-06
+      },
+      {
+        "Template Pair": "1 vs 2",
+        "Spearman rho": 0.9636363636363635,
+        "p-value": 7.320974809529922e-06
+      }
+    ],
+    "template_endorsement_rates": {
+      "0": {
+        "gemma-7b": 65.09779951100244,
+        "llama3.1-8B-it-uncensored": 37.474747474747474,
+        "gemma3-4b-uncensored": 16.01010101010101,
+        "llama2-7B": 56.515151515151516,
+        "llama3-70B": 3.3333333333333335,
+        "mistral-v0.2": 15.331928345626974,
+        "gemma2-9b": 25.90909090909091,
+        "llama3": 45.45454545454545,
+        "mixtral-8x22b": 2.5757575757575757,
+        "mistral-v0.3": 17.370892018779344
+      },
+      "1": {
+        "gemma-7b": 61.43031784841075,
+        "llama3.1-8B-it-uncensored": 33.63636363636363,
+        "gemma3-4b-uncensored": 17.17171717171717,
+        "llama2-7B": 58.93939393939394,
+        "llama3-70B": 1.9191919191919191,
+        "mistral-v0.2": 16.929547844374344,
+        "gemma2-9b": 26.565656565656564,
+        "llama3": 43.08080808080808,
+        "mixtral-8x22b": 3.4343434343434343,
+        "mistral-v0.3": 16.935904116727464
+      },
+      "2": {
+        "gemma-7b": 52.20048899755502,
+        "llama3.1-8B-it-uncensored": 17.575757575757574,
+        "gemma3-4b-uncensored": 15.808080808080808,
+        "llama2-7B": 57.92929292929293,
+        "llama3-70B": 7.828282828282829,
+        "mistral-v0.2": 7.991587802313354,
+        "gemma2-9b": 25.808080808080806,
+        "llama3": 38.63636363636363,
+        "mixtral-8x22b": 0.8080808080808081,
+        "mistral-v0.3": 11.829077644606565
+      }
+    }
+  },
+  "response_length": {
+    "support_mean": 303.1256611065907,
+    "reject_mean": 267.99886928458693,
+    "longer_category": "SUPPORT"
+  },
+  "markers": {
+    "hedging": {
+      "support_mean": 4.7352013832384054,
+      "reject_mean": 3.0727898047160256
+    },
+    "assertive": {
+      "support_mean": 0.3695585842148088,
+      "reject_mean": 0.31346729170102
+    },
+    "rights_language": {
+      "support_mean": 1.3340622457282343,
+      "reject_mean": 0.9983510400226143
+    }
+  }
+}

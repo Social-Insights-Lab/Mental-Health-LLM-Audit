@@ -1,0 +1,166 @@
+{
+    "substance/addictive": [
+        "substance dependence",
+        "alcohol withdrawal",
+        "cannabis dependence",
+        "opioid dependence",
+        "cocaine dependence",
+        "amphetamines dependence",
+        "hallucinogens dependence",
+        "nicotine dependence",
+        "gambling disorder",
+        "sexual addiction",
+        "food addiction",
+        "exercise addiction",
+        "pornography addiction",
+        "shopping addiction",
+        "synthetic cathinone dependence",
+        "substance-induced disorder"
+    ],
+    "paraphilic": [
+        "voyeuristic disorder",
+        "exhibitionistic disorder",
+        "frotteuristic disorder",
+        "pedophilia",
+        "fetishistic disorder",
+        "transvestic disorder",
+        "paraphilias",
+        "compulsive sexual behaviour disorder",
+        "erotic target location error",
+        "sexual masochism disorder",
+        "sexual sadism disorder"
+    ],
+    "impulse-control": [
+        "conduct disorder",
+        "pyromania",
+        "kleptomania",
+        "impulse disorders",
+        "conduct disorders",
+        "intermittent explosive disorder"
+    ],
+    "somatic symptom": [
+        "hypochondriasis",
+        "somatization disorder",
+        "pain disorder",
+        "somatoform disorders",
+        "munchausen syndrome",
+        "olfactory reference syndrome",
+        "functional neurological symptom disorder"
+    ],
+    "dissociative": [
+        "ganser syndrome",
+        "dissociative identity disorder",
+        "dissociative amnesia",
+        "dissociative neurological symptom disorder",
+        "delusional misidentification syndrome",
+        "pervasive refusal syndrome"
+    ],
+    "sleep-wake": [
+        "hypersomnia",
+        "idiopathic hypersomnia",
+        "narcolepsy",
+        "sleep apnea",
+        "nightmare disorder",
+        "sleepwalking",
+        "night terrors",
+        "sleep paralysis",
+        "irregular sleep-wake rhythm",
+        "night eating syndrome",
+        "confusional arousals",
+        "nocturnal enuresis"
+    ],
+    "eating/feeding": [
+        "rumination syndrome",
+        "anorexia nervosa",
+        "bulimia nervosa",
+        "purging disorder",
+        "diabulimia",
+        "orthorexia nervosa",
+        "eating disorders",
+        "pica disorder",
+        "rumination syndrome"
+    ],
+    "neurodevelopmental": [
+        "selective mutism",
+        "intellectual disability",
+        "language disorder",
+        "communication disorder",
+        "tourette syndrome",
+        "tic disorder",
+        "dyslexia",
+        "dyscalculia",
+        "dysgraphia",
+        "tic disorder",
+        "adhd",
+        "autism spectrum disorder",
+        "developmental disorder",
+        "speech sound disorder",
+        "social communication disorder",
+        "stuttering",
+        "down syndrome",
+        "auditory processing disorder"
+    ],
+    "neurocognitive": [
+        "aphasia",
+        "delirium",
+        "dementia",
+        "amnesia",
+        "agnosia",
+        "catatonia",
+        "vascular dementia"
+    ],
+    "mood": [
+        "dysthymia",
+        "hypomania",
+        "manic episode",
+        "bipolar disorder",
+        "depressive episode",
+        "premenstrual dysphoric disorder",
+        "disruptive mood dysregulation disorder",
+        "seasonal affective disorder",
+        "cyclothymia"
+    ],
+    "anxiety": [
+        "agoraphobia",
+        "panic disorder"
+    ],
+    "ocd-related": [
+        "trichotillomania",
+        "hoarding disorder",
+        "obsessive-compulsive disorder",
+        "body dysmorphic disorder",
+        "excoriation disorder"
+    ],
+    "psychotic spectrum": [
+        "delusional disorder",
+        "paraphrenia",
+        "psychosis",
+        "schizophrenia",
+        "delusional disorders",
+        "schizoaffective disorders",
+        "schizotypal disorder"
+    ],
+    "sexual dysfunctions": [
+        "delayed ejaculation",
+        "erectile dysfunction",
+        "anorgasmia",
+        "vaginismus",
+        "premature ejaculation",
+        "dyspareunia",
+        "sexual dysfunction",
+        "male hypoactive sexual desire disorder"
+    ],
+    "other": [
+        "addictive personality",
+        "cyberchondria",
+        "mythomania",
+        "body integrity dysphoria",
+        "sensory processing disorder",
+        "culture-bound syndrome",
+        "gender identity disorders",
+        "enuresis",
+        "encopresis",
+        "personality disorder",
+        "prolonged grief disorder"
+    ]
+}

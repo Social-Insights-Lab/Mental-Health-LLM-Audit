@@ -1,0 +1,43 @@
+{
+  "section_5_2": {
+    "spearman_rho_avg": 0.97,
+    "interpretation": "Model rankings are highly stable across prompt templates"
+  },
+  "section_5_5": {
+    "support_longer": true,
+    "support_mean_length": 303.1,
+    "reject_mean_length": 268.0,
+    "hedging": {
+      "support": 4.74,
+      "reject": 3.07
+    },
+    "assertive": {
+      "support": 0.37,
+      "reject": 0.31
+    },
+    "rights_language": {
+      "support": 1.33,
+      "reject": 1.0
+    }
+  },
+  "modal_analysis": {
+    "restrictive_pattern_support": 92.1,
+    "restrictive_pattern_reject": 71.0
+  },
+  "distinctive_words": {
+    "reject": [
+      "debunk",
+      "misconception",
+      "ableism",
+      "discriminatory",
+      "stigmatizes"
+    ],
+    "support": [
+      "deluded",
+      "unbelief",
+      "heretic",
+      "deviant",
+      "allowed"
+    ]
+  }
+}
